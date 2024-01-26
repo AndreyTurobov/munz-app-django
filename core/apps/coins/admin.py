@@ -1,3 +1,14 @@
 from django.contrib import admin
 
-# Register your models here.
+from core.apps.coins.models.coins import Coin
+
+
+@admin.register(Coin)
+class CoinAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 
+        'title', 
+        'country', 
+        'description', 
+        'state',
+        )

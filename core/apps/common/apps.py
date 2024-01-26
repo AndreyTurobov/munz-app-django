@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 
 
-class CoinsConfig(AppConfig):
+class CommonConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'core.apps.coins'
-    verbose_name = 'Монеты'
+    name = 'common'
