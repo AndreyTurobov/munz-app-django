@@ -1,3 +1,5 @@
+from datetime import datetime, date
+
 from django.db import models
 
 
@@ -18,9 +20,8 @@ class BaseCollectModel(models.Model):
         verbose_name='Размер',
         max_length=25,
     )
-    issue_at = models.TimeField(
+    issue_at = models.CharField(
         verbose_name='Дата выпуска в обращение',
-        blank=True,
     )
     create_at = models.DateTimeField(
         verbose_name='Дата создания',

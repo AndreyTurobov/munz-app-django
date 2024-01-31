@@ -14,9 +14,6 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 
-[package.dependencies]
-typing-extensions = {version = ">=4", markers = "python_version < \"3.11\""}
-
 [package.extras]
 tests = ["pytest", "pytest-asyncio", "mypy (>=0.800)"]
 
@@ -77,15 +74,15 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pydantic"
-version = "2.5.3"
+version = "2.6.0"
 description = "Data validation using Python type hints"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 annotated-types = ">=0.4.0"
-pydantic-core = "2.14.6"
+pydantic-core = "2.16.1"
 typing-extensions = ">=4.6.1"
 
 [package.extras]
@@ -93,11 +90,11 @@ email = ["email-validator (>=2.0.0)"]
 
 [[package]]
 name = "pydantic-core"
-version = "2.14.6"
+version = "2.16.1"
 description = ""
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
@@ -133,8 +130,8 @@ python-versions = ">=2"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
-content-hash = "be220b244be3235675fa335d8b55bceffdacf05324f64a170b37c04c49ed4dd8"
+python-versions = "^3.11.7"
+content-hash = "8dd1c9a46fefc84c8d89c828adc9d8a94648881a31dbc6752b3e4ee3a5c15bbb"
 
 [metadata.files]
 annotated-types = []
