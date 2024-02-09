@@ -1,7 +1,7 @@
 from abc import (
-    ABC, 
+    ABC,
     abstractmethod,
-    )
+)
 from typing import Iterable
 
 from django.db.models import Q
@@ -15,47 +15,46 @@ from core.apps.coins.models.coins import Coin as CoinModel
 class BaseCoinService(ABC):
     @abstractmethod
     def get_coin_list(
-        self, 
-        filters: CoinFilters, 
+        self,
+        filters: CoinFilters,
         pagination: PaginationIn,
-        ) -> Iterable[Coin]: 
-        ...
-    
+    ) -> Iterable[Coin]: ...
+
     @abstractmethod
     def get_coin_count(
-        self, 
+        self,
         filters: CoinFilters,
-        ) -> int:
-         ...
-        
+    ) -> int: ...
 
-# TODO: закинуть фильтры в сервисный слой,чтобы избежать нарушения D из SOLID       
+
+# TODO: закинуть фильтры в сервисный слой,чтобы избежать нарушения D из SOLID
 class ORMCoinService(BaseCoinService):
     def _build_coin_query(
-        self, 
+        self,
         filters: CoinFilters,
-        ) -> Q:
+    ) -> Q:
         query = Q(title__startswith="")
-        
+
         if filters.search is not None:
-            query &= Q(title__icontains=filters.search) | Q(description__icontains=filters.search)
-        
+            query &= Q(title__icontains=filters.search) | Q(
+                description__icontains=filters.search,
+            )
+
         return query
-    
-    
+
     def get_coin_list(
-        self, 
+        self,
         filters: CoinFilters,
         pagination: PaginationIn,
-        )-> Iterable[Coin]:
+    ) -> Iterable[Coin]:
         query = self._build_coin_query(filters)
-        qs = CoinModel.objects.filter(query)[pagination.offset:pagination.offset + pagination.limit]
-        
+        qs = CoinModel.objects.filter(query)[
+            pagination.offset : pagination.offset + pagination.limit
+        ]
+
         return [coin.to_entity() for coin in qs]
-          
-        
+
     def get_coin_count(self, filters: CoinFilters) -> int:
         query = self._build_coin_query(filters)
-        
-        return CoinModel.objects.filter(query).count()  
-           
+
+        return CoinModel.objects.filter(query).count()

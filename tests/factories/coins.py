@@ -8,6 +8,6 @@ class CoinModelFactory(DjangoModelFactory):
     title = factory.Faker('first_name')
     country = factory.Faker('country')
     issue_at = factory.Faker('date_of_birth')
-    
+
     class Meta:
         model = Coin

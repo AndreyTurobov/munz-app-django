@@ -1,7 +1,7 @@
 from django.db import models
 
-from core.apps.common.models import BaseCollectModel
 from core.apps.coins.entities.coins import Coin as CoinEntity
+from core.apps.common.models import BaseCollectModel
 
 
 class Coin(BaseCollectModel):
@@ -18,7 +18,7 @@ class Coin(BaseCollectModel):
         verbose_name='Состояние монеты',
         max_length=25,
     )
-    
+
     def to_entity(self) -> CoinEntity:
         return CoinEntity(
             id=self.id,
@@ -30,7 +30,7 @@ class Coin(BaseCollectModel):
             created_at=self.create_at,
             updated_at=self.update_at,
         )
-    
+
     def __str__(self) -> str:
         return self.title
 

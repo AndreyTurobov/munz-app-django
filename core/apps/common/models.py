@@ -1,15 +1,13 @@
-from datetime import datetime, date
-
 from django.db import models
 
 
 class BaseCollectModel(models.Model):
     title = models.CharField(
-        max_length=255, 
+        max_length=255,
         verbose_name='Название',
-        )
+    )
     country = models.CharField(
-        max_length=255, 
+        max_length=255,
         verbose_name='Страна',
     )
     description = models.TextField(
@@ -31,7 +29,6 @@ class BaseCollectModel(models.Model):
         verbose_name='Дата обновления',
         auto_now=True,
     )
-    
+
     class Meta:
         abstract = True
-    

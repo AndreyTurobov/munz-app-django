@@ -14,7 +14,7 @@ class CoinSchema(BaseModel):
     state: str
     created_at: datetime
     updated_at: datetime | None = None
-    
+
     @staticmethod
     def from_entity(entity: CoinEntity) -> 'CoinSchema':
         return CoinSchema(
@@ -27,5 +27,6 @@ class CoinSchema(BaseModel):
             created_at=entity.created_at,
             updated_at=entity.updated_at,
         )
-    
+
+
 CoinListSchema = list[CoinSchema]
