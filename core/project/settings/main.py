@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # first party
     'core.apps.coins.apps.CoinsConfig',
+    'core.apps.guests.apps.GuestsConfig',
 ]
 
 MIDDLEWARE = [
