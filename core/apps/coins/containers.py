@@ -20,7 +20,9 @@ from core.apps.guests.services.guests import (
 )
 from core.apps.guests.services.senders import (
     BaseSenderService,
-    SenderService,
+    ComposedSenderService,
+    EmailSenderService,
+    PushSenderService,
 )
 
 
@@ -38,7 +40,14 @@ def _initialize_container() -> punq.Container:
     #  initialize guests
     container.register(BaseGuestService, ORMGuestService)
     container.register(BaseCodeService, DjangoCacheCodeService)
-    container.register(BaseSenderService, SenderService)
+    container.register(
+        BaseSenderService,
+        ComposedSenderService,
+        sender_services=(
+            PushSenderService(),
+            EmailSenderService(),
+        ),
+    )
     container.register(BaseAuthService, AuthService)
 
     return container
