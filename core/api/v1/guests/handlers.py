@@ -9,11 +9,9 @@ from core.api.v1.guests.schemas import (
     TokenInSchema,
     TokenOutSchema,
 )
+from core.apps.coins.containers import get_container
 from core.apps.common.exceptions import ServiceException
-from core.apps.guests.services.auth import AuthService
-from core.apps.guests.services.codes import DjangoCacheCodeService
-from core.apps.guests.services.guests import ORMGuestService
-from core.apps.guests.services.senders import SenderService
+from core.apps.guests.services.auth import BaseAuthService
 
 
 router = Router(tags=['Guests'])
@@ -24,12 +22,10 @@ def auth_handler(
     request: HttpRequest,
     schema: AuthInSchema,
 ) -> ApiResponse[AuthOutSchema]:
-    service = AuthService(
-        guest_service=ORMGuestService(),
-        codes_service=DjangoCacheCodeService(),
-        sender_service=SenderService(),
-    )
+    container = get_container()
+    service = container.resolve(BaseAuthService)
     service.authorize(schema.phone)
+
     return ApiResponse(
         data=AuthOutSchema(
             message=f'Code is sent to: {schema.phone}',
@@ -46,11 +42,9 @@ def get_token_handler(
     request: HttpRequest,
     schema: TokenInSchema,
 ) -> ApiResponse[TokenOutSchema]:
-    service = AuthService(
-        guest_service=ORMGuestService(),
-        codes_service=DjangoCacheCodeService(),
-        sender_service=SenderService(),
-    )
+    container = get_container()
+    service = container.resolve(BaseAuthService)
+
     try:
         token = service.confirm(schema.code, schema.phone)
     except ServiceException as exception:

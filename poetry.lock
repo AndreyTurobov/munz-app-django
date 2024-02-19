@@ -285,6 +285,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "punq"
+version = "0.7.0"
+description = "An IOC Container for Python 3.8+"
+category = "main"
+optional = false
+python-versions = ">=3.8.1,<4.0"
+
+[[package]]
 name = "pydantic"
 version = "2.6.0"
 description = "Data validation using Python type hints"
@@ -429,7 +437,7 @@ test = ["covdefaults (>=2.3)", "coverage-enable-subprocess (>=1)", "coverage (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "5bfda0a5906edb6d1ec04b8ad2625e2afc7b6adbaf02759f4fbd1d5bc463c130"
+content-hash = "2101d6f385a703f2afa25157a99922ffc134d860bc35c010fa445c164401fae8"
 
 [metadata.files]
 annotated-types = []
@@ -457,6 +465,7 @@ platformdirs = []
 pluggy = []
 pre-commit = []
 psycopg2-binary = []
+punq = []
 pydantic = []
 pydantic-core = []
 pytest = []

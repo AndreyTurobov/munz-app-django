@@ -12,10 +12,8 @@ from core.api.schemas import (
 )
 from core.api.v1.coins.filters import CoinFilters
 from core.api.v1.coins.schemas import CoinSchema
-from core.apps.coins.services.coins import (
-    BaseCoinService,
-    ORMCoinService,
-)
+from core.apps.coins.containers import get_container
+from core.apps.coins.services.coins import BaseCoinService
 
 
 router = Router(tags=['Coins'])
@@ -27,7 +25,8 @@ def get_coin_list_handler(
     filters: Query[CoinFilters],
     pagination_in: Query[PaginationIn],
 ) -> ApiResponse[ListPaginatedResponse[CoinSchema]]:
-    service: BaseCoinService = ORMCoinService()
+    container = get_container()
+    service: BaseCoinService = container.resolve(BaseCoinService)
     coin_list = service.get_coin_list(filters=filters, pagination=pagination_in)
     coin_count = service.get_coin_count(filters=filters)
     items = [CoinSchema.from_entity(obj) for obj in coin_list]
