@@ -9,7 +9,10 @@ from django.shortcuts import get_object_or_404
 
 from core.api.filters import PaginationIn
 from core.api.v1.coins.filters import CoinFilters
-from core.api.v1.coins.schemas import CoinSchemaIn
+from core.api.v1.coins.schemas import (
+    CoinSchemaIn,
+    PatchCoinSchemaIn,
+)
 from core.apps.coins.entities.coins import Coin
 from core.apps.coins.models.coins import Coin as CoinModel
 
@@ -39,6 +42,13 @@ class BaseCoinService(ABC):
         self,
         coin_id: int,
         schema: CoinSchemaIn,
+    ) -> Coin: ...
+
+    @abstractmethod
+    def partial_update_coin(
+        self,
+        coin_id: int,
+        schema: PatchCoinSchemaIn,
     ) -> Coin: ...
 
     @abstractmethod
@@ -91,6 +101,17 @@ class ORMCoinService(BaseCoinService):
         self,
         coin_id: int,
         schema: CoinSchemaIn,
+    ) -> Coin:
+        coin = get_object_or_404(CoinModel, id=coin_id)
+        for attr, value in schema.dict(exclude_unset=True).items():
+            setattr(coin, attr, value)
+        coin.save()
+        return coin
+
+    def partial_update_coin(
+        self,
+        coin_id: int,
+        schema: PatchCoinSchemaIn,
     ) -> Coin:
         coin = get_object_or_404(CoinModel, id=coin_id)
         for attr, value in schema.dict(exclude_unset=True).items():

@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from ninja import Schema
 
@@ -11,6 +12,12 @@ class CoinSchemaIn(Schema):
     country: str
     issue_at: str
     state: str
+
+
+class PatchCoinSchemaIn(Schema):
+    description: Optional[str] = None
+    issue_at: Optional[str] = None
+    state: Optional[str] = None
 
 
 class CoinSchemaOut(Schema):

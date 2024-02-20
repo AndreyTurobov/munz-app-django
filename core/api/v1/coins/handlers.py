@@ -14,6 +14,7 @@ from core.api.v1.coins.filters import CoinFilters
 from core.api.v1.coins.schemas import (
     CoinSchemaIn,
     CoinSchemaOut,
+    PatchCoinSchemaIn,
 )
 from core.apps.coins.containers import get_container
 from core.apps.coins.services.coins import BaseCoinService
@@ -64,6 +65,17 @@ def update_coin(
     container = get_container()
     service: BaseCoinService = container.resolve(BaseCoinService)
     return ApiResponse(data=service.update_coin(coin_id=coin_id, schema=schema))
+
+
+@router.patch('{coin_id}', response=ApiResponse[PatchCoinSchemaIn])
+def partial_update_coin(
+    request: HttpRequest,
+    coin_id: int,
+    schema: PatchCoinSchemaIn,
+) -> ApiResponse[CoinSchemaOut]:
+    container = get_container()
+    service: BaseCoinService = container.resolve(BaseCoinService)
+    return ApiResponse(data=service.partial_update_coin(coin_id=coin_id, schema=schema))
 
 
 @router.delete('{coin_id}')
