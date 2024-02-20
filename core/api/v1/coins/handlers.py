@@ -53,3 +53,21 @@ def get_coin_list_handler(
     return ApiResponse(
         data=ListPaginatedResponse(items=items, pagination=pagination_out),
     )
+
+
+@router.put('{coin_id}', response=ApiResponse[CoinSchemaIn])
+def update_coin(
+    request: HttpRequest,
+    coin_id: int,
+    schema: CoinSchemaIn,
+) -> ApiResponse[CoinSchemaOut]:
+    container = get_container()
+    service: BaseCoinService = container.resolve(BaseCoinService)
+    return ApiResponse(data=service.update_coin(coin_id=coin_id, schema=schema))
+
+
+@router.delete('{coin_id}')
+def delete_coin(request: HttpRequest, coin_id: int) -> None:
+    container = get_container()
+    service: BaseCoinService = container.resolve(BaseCoinService)
+    return service.delete_coin(coin_id=coin_id)

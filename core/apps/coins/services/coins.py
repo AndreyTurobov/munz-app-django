@@ -5,6 +5,7 @@ from abc import (
 from typing import Iterable
 
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from core.api.filters import PaginationIn
 from core.api.v1.coins.filters import CoinFilters
@@ -32,6 +33,19 @@ class BaseCoinService(ABC):
         self,
         filters: CoinFilters,
     ) -> int: ...
+
+    @abstractmethod
+    def update_coin(
+        self,
+        coin_id: int,
+        schema: CoinSchemaIn,
+    ) -> Coin: ...
+
+    @abstractmethod
+    def delete_coin(
+        self,
+        coin_id: int,
+    ) -> None: ...
 
 
 # TODO: закинуть фильтры в сервисный слой,чтобы избежать нарушения D из SOLID
@@ -72,3 +86,22 @@ class ORMCoinService(BaseCoinService):
         query = self._build_coin_query(filters)
 
         return CoinModel.objects.filter(query).count()
+
+    def update_coin(
+        self,
+        coin_id: int,
+        schema: CoinSchemaIn,
+    ) -> Coin:
+        coin = get_object_or_404(CoinModel, id=coin_id)
+        for attr, value in schema.dict(exclude_unset=True).items():
+            setattr(coin, attr, value)
+        coin.save()
+        return coin
+
+    def delete_coin(
+        self,
+        coin_id: int,
+    ) -> None:
+        coin = get_object_or_404(CoinModel, id=coin_id)
+        coin.delete()
+        return {'success': True}
