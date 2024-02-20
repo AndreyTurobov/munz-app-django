@@ -8,11 +8,18 @@ from django.db.models import Q
 
 from core.api.filters import PaginationIn
 from core.api.v1.coins.filters import CoinFilters
+from core.api.v1.coins.schemas import CoinSchemaIn
 from core.apps.coins.entities.coins import Coin
 from core.apps.coins.models.coins import Coin as CoinModel
 
 
 class BaseCoinService(ABC):
+    @abstractmethod
+    def create_coin(
+        self,
+        schema: CoinSchemaIn,
+    ) -> Coin: ...
+
     @abstractmethod
     def get_coin_list(
         self,
@@ -29,6 +36,13 @@ class BaseCoinService(ABC):
 
 # TODO: закинуть фильтры в сервисный слой,чтобы избежать нарушения D из SOLID
 class ORMCoinService(BaseCoinService):
+    def create_coin(
+        self,
+        schema: CoinSchemaIn,
+    ) -> Coin:
+        coin = CoinModel.objects.create(**schema.dict(exclude_unset=True))
+        return coin.to_entity()
+
     def _build_coin_query(
         self,
         filters: CoinFilters,

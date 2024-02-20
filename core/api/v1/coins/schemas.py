@@ -1,11 +1,19 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from ninja import Schema
 
 from core.apps.coins.entities.coins import Coin as CoinEntity
 
 
-class CoinSchema(BaseModel):
+class CoinSchemaIn(Schema):
+    title: str
+    description: str
+    country: str
+    issue_at: str
+    state: str
+
+
+class CoinSchemaOut(Schema):
     id: int  # noqa
     title: str
     description: str
@@ -16,8 +24,8 @@ class CoinSchema(BaseModel):
     updated_at: datetime | None = None
 
     @staticmethod
-    def from_entity(entity: CoinEntity) -> 'CoinSchema':
-        return CoinSchema(
+    def from_entity(entity: CoinEntity) -> 'CoinSchemaOut':
+        return CoinSchemaOut(
             id=entity.id,
             title=entity.title,
             description=entity.description,
@@ -29,4 +37,4 @@ class CoinSchema(BaseModel):
         )
 
 
-CoinListSchema = list[CoinSchema]
+CoinListSchema = list[CoinSchemaOut]

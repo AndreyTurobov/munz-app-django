@@ -37,7 +37,7 @@ def _initialize_container() -> punq.Container:
     # initialize coins
     container.register(BaseCoinService, ORMCoinService)
 
-    #  initialize guests
+    # initialize guests
     container.register(BaseGuestService, ORMGuestService)
     container.register(BaseCodeService, DjangoCacheCodeService)
     container.register(
