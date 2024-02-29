@@ -8,12 +8,12 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
 from core.api.filters import PaginationIn
-from core.api.v1.coins.filters import CoinFilters
 from core.api.v1.coins.schemas import (
     CoinSchemaIn,
     PatchCoinSchemaIn,
 )
 from core.apps.coins.entities.coins import Coin
+from core.apps.coins.filters.coins import CoinFilters
 from core.apps.coins.models.coins import Coin as CoinModel
 
 

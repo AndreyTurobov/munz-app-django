@@ -9,9 +9,9 @@ from core.api.v1.guests.schemas import (
     TokenInSchema,
     TokenOutSchema,
 )
-from core.apps.coins.containers import get_container
 from core.apps.common.exceptions import ServiceException
 from core.apps.guests.services.auth import BaseAuthService
+from core.project.containers import get_container
 
 
 router = Router(tags=['Guests'])
@@ -43,7 +43,7 @@ def get_token_handler(
     schema: TokenInSchema,
 ) -> ApiResponse[TokenOutSchema]:
     container = get_container()
-    service = container.resolve(BaseAuthService)
+    service: BaseAuthService = container.resolve(BaseAuthService)
 
     try:
         token = service.confirm(schema.code, schema.phone)
