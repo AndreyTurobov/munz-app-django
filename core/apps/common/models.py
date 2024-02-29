@@ -1,26 +1,7 @@
 from django.db import models
 
 
-class BaseCollectModel(models.Model):
-    title = models.CharField(
-        max_length=255,
-        verbose_name='Название',
-    )
-    country = models.CharField(
-        max_length=255,
-        verbose_name='Страна',
-    )
-    description = models.TextField(
-        verbose_name='Описание',
-        blank=True,
-    )
-    size = models.CharField(
-        verbose_name='Размер',
-        max_length=25,
-    )
-    issue_at = models.CharField(
-        verbose_name='Дата выпуска в обращение',
-    )
+class TimedBaseModel(models.Model):
     create_at = models.DateTimeField(
         verbose_name='Дата создания',
         auto_now_add=True,

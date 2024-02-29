@@ -1,7 +1,7 @@
 from django.db import models
 
 from core.apps.coins.entities.coins import Coin as CoinEntity
-from core.apps.common.models import BaseCollectModel
+from core.apps.coins.models.base import BaseCollectModel
 
 
 class Coin(BaseCollectModel):

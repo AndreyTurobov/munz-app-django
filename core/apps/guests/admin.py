@@ -10,3 +10,4 @@ class GuestAdmin(admin.ModelAdmin):
         'phone',
         'create_at',
     )
+    search_fields = ('phone',)
