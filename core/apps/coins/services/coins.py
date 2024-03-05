@@ -13,6 +13,7 @@ from core.api.v1.coins.schemas import (
     PatchCoinSchemaIn,
 )
 from core.apps.coins.entities.coins import Coin
+from core.apps.coins.exceptions.coins import CoinNotFound
 from core.apps.coins.filters.coins import CoinFilters
 from core.apps.coins.models.coins import Coin as CoinModel
 
@@ -22,6 +23,12 @@ class BaseCoinService(ABC):
     def create_coin(
         self,
         schema: CoinSchemaIn,
+    ) -> Coin: ...
+
+    @abstractmethod
+    def get_by_id(
+        self,
+        coin_id: int,
     ) -> Coin: ...
 
     @abstractmethod
@@ -64,8 +71,19 @@ class ORMCoinService(BaseCoinService):
         self,
         schema: CoinSchemaIn,
     ) -> Coin:
-        coin = CoinModel.objects.create(**schema.dict(exclude_unset=True))
-        return coin.to_entity()
+        coin_dto = CoinModel.objects.create(**schema.dict(exclude_unset=True))
+        return coin_dto.to_entity()
+
+    def get_by_id(
+        self,
+        coin_id: int,
+    ) -> int:
+        try:
+            coin_dto = CoinModel.objects.get(pk=coin_id)
+        except CoinModel.DoesNotExist:
+            raise CoinNotFound(coin_id=coin_id)
+
+        return coin_dto.to_entity()
 
     def _build_coin_query(
         self,

@@ -6,6 +6,13 @@ from core.apps.coins.services.coins import (
     BaseCoinService,
     ORMCoinService,
 )
+from core.apps.coins.services.reviews import (
+    BaseReviewService,
+    BaseReviewValidatorService,
+    ComposedReviewValidatorService,
+    ORMReviewService,
+)
+from core.apps.coins.use_cases.reviews.create import CreateReviewUseCase
 from core.apps.guests.services.auth import (
     AuthService,
     BaseAuthService,
@@ -49,5 +56,13 @@ def _initialize_container() -> punq.Container:
         ),
     )
     container.register(BaseAuthService, AuthService)
+
+    container.register(BaseReviewService, ORMReviewService)
+    container.register(
+        BaseReviewValidatorService,
+        ComposedReviewValidatorService,
+        validators=[],
+    )
+    container.register(CreateReviewUseCase)
 
     return container

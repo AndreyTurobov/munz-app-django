@@ -27,8 +27,8 @@ class Coin(BaseCollectModel):
             country=self.country,
             issue_at=self.issue_at,
             state=self.state,
-            created_at=self.create_at,
-            updated_at=self.update_at,
+            create_at=self.create_at,
+            update_at=self.update_at,
         )
 
     def __str__(self) -> str:

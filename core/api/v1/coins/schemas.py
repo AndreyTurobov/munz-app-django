@@ -27,8 +27,8 @@ class CoinSchemaOut(Schema):
     country: str
     issue_at: str
     state: str
-    created_at: datetime
-    updated_at: datetime | None = None
+    create_at: datetime
+    update_at: datetime | None = None
 
     @staticmethod
     def from_entity(entity: CoinEntity) -> 'CoinSchemaOut':
@@ -39,8 +39,8 @@ class CoinSchemaOut(Schema):
             country=entity.country,
             issue_at=entity.issue_at,
             state=entity.state,
-            created_at=entity.created_at,
-            updated_at=entity.updated_at,
+            create_at=entity.create_at,
+            update_at=entity.update_at,
         )
 
 

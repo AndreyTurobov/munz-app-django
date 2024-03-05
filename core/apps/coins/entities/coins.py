@@ -10,5 +10,5 @@ class Coin:
     country: str
     issue_at: str
     state: str
-    created_at: datetime
-    updated_at: datetime
+    create_at: datetime
+    update_at: datetime

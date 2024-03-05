@@ -5,6 +5,7 @@ from abc import (
 from uuid import uuid4
 
 from core.apps.guests.entities import Guest
+from core.apps.guests.exceptions.guests import GuestTokenInvalid
 from core.apps.guests.models import Guest as GuestModel
 
 
@@ -17,6 +18,9 @@ class BaseGuestService(ABC):
 
     @abstractmethod
     def get(self, phone: str) -> Guest: ...
+
+    @abstractmethod
+    def get_by_token(self, token: str) -> Guest: ...
 
 
 class ORMGuestService(BaseGuestService):
@@ -33,3 +37,11 @@ class ORMGuestService(BaseGuestService):
         GuestModel.objects.filter(phone=guest.phone).update(token=new_token)
 
         return new_token
+
+    def get_by_token(self, token: str) -> Guest:
+        try:
+            guest_dto = GuestModel.objects.get(token=token)
+        except GuestModel.DoesNotExist:
+            raise GuestTokenInvalid(token=token)
+
+        return guest_dto.to_entity()

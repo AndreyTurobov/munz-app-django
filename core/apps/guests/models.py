@@ -26,6 +26,7 @@ class Guest(TimedBaseModel):
         return Guest(
             phone=self.phone,
             create_at=self.create_at,
+            id=self.pk,
         )
 
     class Meta:

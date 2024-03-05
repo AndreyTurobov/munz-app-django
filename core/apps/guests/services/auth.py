@@ -9,6 +9,7 @@ from core.apps.guests.services.guests import BaseGuestService
 from core.apps.guests.services.senders import BaseSenderService
 
 
+# TODO Remove business-logic and move in use-cases
 @dataclass(eq=False)
 class BaseAuthService(ABC):
     guest_service: BaseGuestService
