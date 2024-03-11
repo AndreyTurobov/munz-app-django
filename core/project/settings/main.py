@@ -41,12 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
+    'elasticapm.contrib.django',
     # first party
     'core.apps.coins.apps.CoinsConfig',
     'core.apps.guests.apps.GuestsConfig',
 ]
 
 MIDDLEWARE = [
+    'core.project.middlewares.ElasticAPMMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,3 +137,50 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ELASTIC_APM = {
+    'SERVICE_NAME': 'reviews',
+    'SERVER_URL': env('APM_URL', default='http://apm-server:8200'),
+    'DEBUG': DEBUG,
+    'CAPTURE_BODY': 'all',
+    'ENVIRONMENT': 'prod',
+    'USE_ELASTIC_EXCEPTHOOK': True,
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%{levelname}s %{asctime}s %{module}s %{process}d %{thread}d %{message}s',
+        },
+    },
+    'handlers': {
+        'elasticapm': {
+            'level': 'WARNING',
+            'class': 'elasticapm.contrib.django.handlers.LoggingHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'mysite': {
+            'handlers': ['elasticapm'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'elasticapm.errors': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}

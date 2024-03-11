@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from logging import Logger
 
 from core.apps.coins.entities.reviews import Review as ReviewEntity
 from core.apps.coins.services.coins import BaseCoinService
@@ -15,6 +16,7 @@ class CreateReviewUseCase:
     review_service: BaseReviewService
     validator_service: BaseReviewValidatorService
     guest_service: BaseGuestService
+    logger: Logger
 
     def execute(
         self,
