@@ -152,7 +152,11 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
-            'format': '%{levelname}s %{asctime}s %{module}s %{process}d %{thread}d %{message}s',
+            "format": (
+                "{levelname} {asctime} {module} {process:d}"
+                "{thread:d} {message} error_meta:\n {error_meta}"
+            ),
+            "style": "{",
         },
     },
     'handlers': {
@@ -167,17 +171,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'mysite': {
-            'handlers': ['elasticapm'],
-            'level': 'WARNING',
-            'propagate': False,
-        },
-        'elasticapm.errors': {
+        'django.request': {
             'handlers': ['console'],
             'level': 'ERROR',
             'propagate': False,

@@ -22,7 +22,7 @@ class ElasticAPMMiddleware:
 
     def __init__(self, get_response: Callable):
         self.get_response = get_response
-        self.client = elasticapm.get_client()
+        self._client = elasticapm.get_client()
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         transaction_name = self._create_transaction_name(request)

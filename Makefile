@@ -32,7 +32,7 @@ app:
 
 .PHONY: monitoring
 monitoring: 
-	${DC} -f ${MONITORING_FILE} ${ENV} up --build -d
+	${DC} -f ${MONITORING_FILE} ${ENV} up --build -d --remove-orphans
 
 .PHONY: monitoring-logs
 monitoring-logs: 
