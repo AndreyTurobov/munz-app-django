@@ -13,7 +13,7 @@ from django.urls import (
 import elasticapm
 
 
-class ElasticAPMMiddleware:
+class ElasticApmMiddleware:
     """Middleware для создания отдельных транзакций.
 
     Также добавляет тело ответа в apm.

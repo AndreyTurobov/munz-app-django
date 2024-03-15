@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   apm-server:
-    image: elastic/apm-server:8.12.2
+    image: elastic/apm-server:7.6.2
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -12,8 +12,6 @@ services:
     cap_drop: ["ALL"]
     ports:
     - 8200:8200
-    networks:
-    - elastic
     command: >
       apm-server -e
         -E apm-server.rum.enabled=true
@@ -28,40 +26,38 @@ services:
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
 
   elasticsearch:
-    image: elasticsearch:8.12.2
+    image: elasticsearch:7.6.2
     environment:
     - bootstrap.memory_lock=true
     - cluster.name=docker-cluster
     - cluster.routing.allocation.disk.threshold_enabled=false
     - discovery.type=single-node
-    - ES_JAVA_OPTS=-XX:UseAVX=0 -Xms1g -Xmx1g
+    - xpack.security.enabled=false
+    - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ulimits:
       memlock:
         hard: -1
         soft: -1    
     volumes:
-    - esdata:/usr/share/elasticsearch/data
+    - esdata:/var/lib/elasticsearch/data
     ports:
     - 9200:9200
-    networks:
-    - elastic
     healthcheck:
       interval: 30s
       retries: 10
       test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
 
   kibana:
-    image: kibana:8.12.2
+    image: kibana:7.6.2
     depends_on:
       elasticsearch:
         condition: service_healthy
     environment:
+      # - xpack.fleet.agents.tlsCheckDisabled=true
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
     - 5601:5601
-    networks:
-    - elastic
     healthcheck:
       interval: 30s
       retries: 20
@@ -74,13 +70,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-    networks:
-    - elastic
 
 volumes:
   esdata:
     driver: local
-
-networks:
-  elastic:
-    driver: bridge
